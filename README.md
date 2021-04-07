@@ -1,2 +1,2 @@
-# dsir_capstone
-This is my personal portfolio github account.
+# Campaign Finance Data
+Problem statement, data dictionaries, and project timeline overview.
