@@ -1,15 +1,12 @@
 # Campaign Finance Capstone Project
-### Exploratory Data Analysis
-#### **Encompasses all federal races from 1990-2016**
 
-## Problem Statement:
-
-To predict the amount of money that needs to be raised to win a congressional or senate race in the next election cycle, based on location and incumbency status.
+My goal is to predict the amount of money that needs to be raised to win a congressional or senate race in the next election cycle based on location, incumbency status, and a comprehensive history of all individual and PAC contributions since 1990.
 
 ### Methods:
 
-Data will be stored in an AWS Relational Database system using PostgreSQL.
-<br>![](docs/FEC_ERD-2.png)<br>
+Data will be stored in an AWS Relational Database system using PostgreSQL:
+
+<br><br>![](docs/FEC_ERD-2.png)<br>
 
 After extensive analysis, I plan to use several linear regression models to predict the total amount of money to be raised. The final data product will be a Streamlit app where the user inputs:
 
