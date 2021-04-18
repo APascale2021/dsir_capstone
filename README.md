@@ -6,7 +6,9 @@ My goal is to predict the amount of money that needs to be raised to win a congr
 
 Data will be stored in an AWS Relational Database system using PostgreSQL:
 
-<br><br>![](docs/FEC_ERD-2.png)<br>
+<br>![](docs/FEC_ERD-2.png)<br>
+
+### Project outline:
 
 After extensive analysis, I plan to use several linear regression models to predict the total amount of money to be raised. The final data product will be a Streamlit app where the user inputs:
 
