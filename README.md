@@ -1,7 +1,6 @@
 # Campaign Finance Capstone Project
 ### Exploratory Data Analysis
 #### **Encompasses all federal races from 1990-2016**
-<br>
 
 ## Problem Statement:
 
@@ -9,7 +8,8 @@ To predict the amount of money that needs to be raised to win a congressional or
 
 ### Methods:
 
-First, I will need to figure out a large-scale storage solution to efficiently query all relevant data, and connect  databases on similar foreign keys (such as CandidateId). Then, I'll filter by Congressional and Senate campaigns and use clustering and principal component analysis to determine main groupings of campaigns -- I expect incumbency to be a primary factor.
+Data will be stored in an AWS Relational Database system using PostgreSQL.
+<br>![](docs/FEC_ERD-2.png)<br>
 
 After extensive analysis, I plan to use several linear regression models to predict the total amount of money to be raised. The final data product will be a Streamlit app where the user inputs:
 
