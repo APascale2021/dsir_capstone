@@ -6,7 +6,7 @@ My goal is to predict the amount of money that needs to be raised to win a congr
 
 Data will be stored in an AWS Relational Database system using PostgreSQL:
 
-<br>![](docs/FEC_ERD-2.png)<br>
+<br>![](docs/FEC_ERD.png)<br>
 
 ### Project outline:
 
