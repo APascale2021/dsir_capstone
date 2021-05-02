@@ -59,7 +59,10 @@ def get_comp_score(territory):
 # Convert a list of features into a DataFrame
 def list_to_df(test_data):
     df = pd.DataFrame(data=test_data).T
-    df.columns=['cycle', 'sen', 'dem', 'repub', 'comp_score']
+    if len(test_data)==5:
+        df.columns=['cycle', 'sen', 'dem', 'repub', 'comp_score']
+    elif len(test_data)==6:
+        df.columns=['cycle', 'sen', 'dem', 'repub', 'comp_score', 'funds']
     return df
 
 # Get predicted fundraising total from a list of features
@@ -71,12 +74,36 @@ def get_prediction(features_list):
 
     return saved_model.predict(new_df)
 
+def predict_win(features_list):
+    with open('lg_model.pk', 'rb') as file:
+        saved_model_2 = pickle.load(file)
+
+    new_df2 = list_to_df(features_list)
+
+    percent_win = saved_model_2.predict_proba(new_df2).ravel()
+
+    return percent_win[1]*100
+
 # Return a formatted number in millions per decimal
 def to_millions(n):
-    total = round(n*1_000_000, 2)
+    total = n*1_000_000
+    total = round(total, 2)
     num = str(total)
+    i = num.index('.')
+    decimal_pt = num[i+1:]
 
     if len(num.split('.')[0]) <= 6:
-        return '$'+num[:3]+','+num[3:]
+        if decimal_pt == '0':
+            return '$'+num[:3]+','+num[3:i]
+        else:
+            return '$'+num[:3]+','+num[3:]
+    elif len(num.split('.')[0]) == 7:
+        if decimal_pt == '0':
+            return '$'+num[:1]+','+num[1:4]+','+num[4:i]
+        else:
+            return '$'+num[:1]+','+num[1:4]+','+num[4:]
     else:
-        return '$'+num[:1]+','+num[1:4]+','+num[4:]
+        if decimal_pt == '0':
+            return '$'+num[:2]+','+num[2:5]+','+num[5:i]
+        else:
+            return '$'+num[:2]+','+num[2:5]+','+num[5:]

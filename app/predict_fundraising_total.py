@@ -6,6 +6,7 @@ import pandas as pd
 
 global house_rank
 global state_list
+global features_list
 global state_codes
 
 st.title('Campaign Finance Capstone')
@@ -26,6 +27,7 @@ def df_to_dict(df):
 state_codes = df_to_dict(usps)
 house_rank = df_to_dict(all_districts)
 state_list = []
+features_list = []
 
 def get_districts(state, rankings):
     districts = [key for key in rankings.keys() if key.startswith(state)]
@@ -56,6 +58,10 @@ if submit_button:
     if campaign_type == 'Senate':
         st.subheader(f'{name} is working on a {political_party} {campaign_type} campaign in {state}')
         sen_features = form_input_convert.convert_data(2014, campaign_type, political_party, state, None)
+        features_list.append(sen_features)
+        with open('features_list.pk', 'wb') as file:
+            pickle.dump(features_list, file)
+
         st.write('Here are the features that went into the model:')
         st.write(form_input_convert.list_to_df(sen_features))
         sen_total = form_input_convert.get_prediction(sen_features)[0]
@@ -65,9 +71,30 @@ if submit_button:
     elif campaign_type == 'Congressional':
         st.subheader(f'{name} is working on a {political_party} {campaign_type} campaign in {district}')
         congr_features = form_input_convert.convert_data(2010, campaign_type, political_party, state, district)
+        features_list.append(congr_features)
+        with open('features_list.pk', 'wb') as file:
+                pickle.dump(features_list, file)
+
         st.write('Here are the features that went into the model:')
         st.write(form_input_convert.list_to_df(congr_features))
         congr_total = form_input_convert.get_prediction(congr_features)[0]*.45
         st.write('********')
         st.write(f'In order to win, {name} needs to raise the following:')
         st.header(form_input_convert.to_millions(congr_total))
+
+funds = st.slider('How many millions do you think you can raise?', min_value=.5, max_value=15.0, step=.2)
+with open('features_list.pk', 'rb') as file:
+        saved_features = pickle.load(file)
+cached_features = saved_features.pop()
+#st.write('Here are the features that went into the model:')
+st.write(form_input_convert.list_to_df(cached_features + [funds]))
+
+# Adjusted funds if senate race
+if cached_features[1]==1:
+    adj = .5
+else:
+    adj = 1
+final_prediction = form_input_convert.predict_win(cached_features + [funds*adj])
+
+st.subheader(f"If you can raise {form_input_convert.to_millions(funds)} dollars")
+st.header(f'You have a {round(final_prediction, 2)}% chance of winning.')
