@@ -55,3 +55,28 @@ def get_comp_score(territory):
         return senate_rank[territory]
     else:
         return house_rank[territory]
+
+# Convert a list of features into a DataFrame
+def list_to_df(test_data):
+    df = pd.DataFrame(data=test_data).T
+    df.columns=['cycle', 'sen', 'dem', 'repub', 'comp_score']
+    return df
+
+# Get predicted fundraising total from a list of features
+def get_prediction(features_list):
+    with open('lr_model.pk', 'rb') as file:
+        saved_model = pickle.load(file)
+
+    new_df = list_to_df(features_list)
+
+    return saved_model.predict(new_df)
+
+# Return a formatted number in millions per decimal
+def to_millions(n):
+    total = round(n*1_000_000, 2)
+    num = str(total)
+
+    if len(num.split('.')[0]) <= 6:
+        return '$'+num[:3]+','+num[3:]
+    else:
+        return '$'+num[:1]+','+num[1:4]+','+num[4:]
